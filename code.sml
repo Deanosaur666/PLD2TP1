@@ -1,19 +1,8 @@
-﻿(* power *)
-fun power (a : real, 0) = 1.0
-  | power (a : real, b : int) =
-  if b < 0 then 1.0/(power(a, ~b))
-  else if(b mod 2 = 0) then power(a*a, b div 2)
-  else a * power (a, b-1);
-
-power(3.0, 2);
-power(2.0, ~2);
-power(2.0, 4);
-
 (* 1 *)
 fun min3 (a, b, c) = 
-if a < b andalso a < c then a
-else if b < a andalso b < c then b
-else c;
+  if a < b andalso a < c then a
+  else if b < a andalso b < c then b
+  else c;
 
 (* 2 *)
 fun cycle (list, 0) = list
@@ -22,10 +11,11 @@ fun cycle (list, 0) = list
 cycle([1,2,3,4,5,6], 2);
 
 (* 3 *)
-
 fun isPrime 0 = false
   | isPrime 1 = false
   | isPrime a = 
+  if a < 0 then false
+  else
   let
     fun divisable(a, b) =
       if b < 2 then true
@@ -36,3 +26,38 @@ fun isPrime 0 = false
   end;
 
 isPrime 11;
+isPrime ~11;
+
+(* 4 *)
+fun select (nil, f) = nil
+  | select(a::at, f) = 
+  if f a then
+    a::select(at, f)
+  else
+    select(at, f);
+
+select([1,2,3,4,5,6,7,8,9,10], isPrime);
+
+(* 5 *)
+fun band (nil) = true
+  | band (a::at) = a orelse (not (null at) andalso band(at));
+
+band(nil);
+band([false, false]);
+
+(* 6 *)
+fun duplist (nil) = nil
+  | duplist (a::at) = a::a::duplist(at);
+
+duplist [1, 3, 2];
+
+(* 7 *)
+fun max (a::at) =
+  if null at then a
+  else if a > max (at) then a
+  else max(at);
+
+max([1, 4, ~3, 2]);
+
+(* 8 *)
+(* convert list of pairs (tuples) to a pair of lists (a tuple of two lists) *)
