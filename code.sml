@@ -1,8 +1,8 @@
 (* 1 *)
 fun min3 (a, b, c) = 
-  if a < b andalso a < c then a
-  else if b < a andalso b < c then b
-  else c;
+if a < b andalso a < c then a
+else if b < a andalso b < c then b
+else c;
 
 (* 2 *)
 fun cycle (list, 0) = list
@@ -61,3 +61,21 @@ max([1, 4, ~3, 2]);
 
 (* 8 *)
 (* convert list of pairs (tuples) to a pair of lists (a tuple of two lists) *)
+(* this is horrible to look at *)
+fun convert (nil) = (nil, nil)
+  | convert (lop : ('a * 'b) list) : ('a list * 'b list) =
+  let
+    fun addfirst(nil, lista) = lista
+        | addfirst(lop::lopt : ('a * 'b) list, lista) = (#1 lop)::addfirst(lopt, lista)
+    fun addsecond(nil, listb) = listb
+        | addsecond(lop::lopt : ('a * 'b) list, listb) = (#2 lop)::addsecond(lopt, listb)
+    in
+      let
+        fun addpair(lop, (pola, polb)) = (addfirst(lop, pola), addsecond(lop, polb))
+    in
+      addpair(lop, (nil, nil))
+end
+end;
+
+convert [(1,2), (3,4), (5,6)];
+
