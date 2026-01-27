@@ -1,3 +1,5 @@
+(* Dean Yockey *)
+
 (* 1 *)
 fun min3 (a, b, c) = 
 if a < b andalso a < c then a
@@ -39,6 +41,7 @@ fun select (nil, f) = nil
 select([1,2,3,4,5,6,7,8,9,10], isPrime);
 
 (* 5 *)
+(* TODO: use mapreduce *)
 fun band (nil) = true
   | band (a::at) = a orelse (not (null at) andalso band(at));
 
@@ -79,3 +82,34 @@ end;
 
 convert [(1,2), (3,4), (5,6)];
 
+(* in class *)
+fun factorial n =
+  case n of
+    0 => 1
+  | _ => n * factorial (n - 1);
+
+fun odd_or_even n =
+  case n mod 2 of
+    0 => "even"
+  | 1 => "odd";
+
+odd_or_even 1;
+
+fun dibide a = fn b => a div b;
+dibide 6 2;
+
+fun triple a b c = [a, b, c];
+triple 2 3 4;
+
+val double = triple 0;
+double 2 3;
+
+fun beb nil a = [a]
+  | beb [x] a = a :: [x]
+  | beb (x::xt) a = a :: [hd xt];
+
+beb [1] 2;
+beb [1, 2, 3, 4] 7;
+beb nil 3;
+
+foldl (op ::) nil [1, 2, 3, 4, 5];
