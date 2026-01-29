@@ -41,12 +41,12 @@ fun select (nil, f) = nil
 select([1,2,3,4,5,6,7,8,9,10], isPrime);
 
 (* 5 *)
-(* TODO: use mapreduce *)
-fun band (nil) = true
-  | band (a::at) = a orelse (not (null at) andalso band(at));
+fun band nil = true
+  | band a = foldr (fn (x, y) => x orelse y) false a;
 
 band(nil);
 band([false, false]);
+band([false, false, true, false]);
 
 (* 6 *)
 fun duplist (nil) = nil
@@ -75,10 +75,10 @@ fun convert (nil) = (nil, nil)
     in
       let
         fun addpair(lop, (pola, polb)) = (addfirst(lop, pola), addsecond(lop, polb))
-    in
-      addpair(lop, (nil, nil))
-end
-end;
+      in
+        addpair(lop, (nil, nil))
+      end
+  end;
 
 convert [(1,2), (3,4), (5,6)];
 
@@ -113,3 +113,41 @@ beb [1, 2, 3, 4] 7;
 beb nil 3;
 
 foldl (op ::) nil [1, 2, 3, 4, 5];
+
+fun insertSort cmp xs =
+  let
+    fun insert x [] = [x]
+      | insert x (y::ys) =
+        if cmp (x, y) then x::y::ys
+        else y::insert x ys
+    fun sort [] = []
+      | sort (x::xs) = insert x (sort xs)
+  in
+    sort xs
+  end;
+
+fun bubble [] = []
+  | bubble [x] = [x]
+  | bubble(x::y::rest) = 
+    if x > y then y::bubble(x::rest)
+    else x::bubble(y::rest);
+
+fun bubbleSort lst =
+  let
+    fun repeat (0, l) = l
+    | repeat (n, l) = repeat (n-1, bubble l)
+  in
+    repeat (length lst, lst)
+  end;
+
+bubbleSort [5, 3, 2, 4, 1];
+val l = [1, 2, 3];
+
+fun gcd(a, 0) = a
+  | gcd(a, b) = gcd(b, a mod b);
+
+gcd(35, 14);
+
+fun gcdl lst = foldl gcd 0 lst;
+
+gcdl [999, 27, 81, 54];
