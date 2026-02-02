@@ -83,82 +83,33 @@ fun convert (nil) = (nil, nil)
 convert [(1,2), (3,4), (5,6)];
 
 (* 9 *)
-(* BST *)
+(* makeBST *)
 datatype 'a bst =
   BSTNil |
   BSTNode of  'a bst * 'a * 'a bst;
 
+fun bstInsert(BSTNil, x, comp) = BSTNode(BSTNil, x, BSTNil)
+  | bstInsert(BSTNode(left, data, right), x, comp) =
+    if comp(x, data) then BSTNode(bstInsert(left, x, comp), data, right)
+    else  BSTNode(left, data, bstInsert(right, x, comp));
+
 (* 'a list → ('a * 'a → bool) → 'a tree *)
-fun makeBST (x::xs) f =
-  if f x then BSTNil
-  else BSTNil;
+fun makeBST nil comp = BSTNil
+  | makeBST (x::xs) comp = bstInsert(makeBST xs comp, x, comp);
 
-(* in class *)
-fun factorial n =
-  case n of
-    0 => 1
-  | _ => n * factorial (n - 1);
+makeBST [5, 4, 6, 3, 1, 9, ~1, 2] (op <);
 
-fun odd_or_even n =
-  case n mod 2 of
-    0 => "even"
-  | 1 => "odd";
+makeBST [3, 1, 2] (op <);
 
-odd_or_even 1;
+(* 10 *)
+(* searchBST *)
+(* ''a tree → (''a * ''a → bool) → ''a → bool *)
 
-fun dibide a = fn b => a div b;
-dibide 6 2;
+fun searchBST BSTNil _ _ = false
+  | searchBST (BSTNode(left, data, right)) comp x =
+    if x = data then true
+    else if comp(x, data) then searchBST left comp x
+    else searchBST right comp x;
 
-fun triple a b c = [a, b, c];
-triple 2 3 4;
-
-val double = triple 0;
-double 2 3;
-
-fun beb nil a = [a]
-  | beb [x] a = a :: [x]
-  | beb (x::xt) a = a :: [hd xt];
-
-beb [1] 2;
-beb [1, 2, 3, 4] 7;
-beb nil 3;
-
-foldl (op ::) nil [1, 2, 3, 4, 5];
-
-fun insertSort cmp xs =
-  let
-    fun insert x [] = [x]
-      | insert x (y::ys) =
-        if cmp (x, y) then x::y::ys
-        else y::insert x ys
-    fun sort [] = []
-      | sort (x::xs) = insert x (sort xs)
-  in
-    sort xs
-  end;
-
-fun bubble [] = []
-  | bubble [x] = [x]
-  | bubble(x::y::rest) = 
-    if x > y then y::bubble(x::rest)
-    else x::bubble(y::rest);
-
-fun bubbleSort lst =
-  let
-    fun repeat (0, l) = l
-    | repeat (n, l) = repeat (n-1, bubble l)
-  in
-    repeat (length lst, lst)
-  end;
-
-bubbleSort [5, 3, 2, 4, 1];
-val l = [1, 2, 3];
-
-fun gcd(a, 0) = a
-  | gcd(a, b) = gcd(b, a mod b);
-
-gcd(35, 14);
-
-fun gcdl lst = foldl gcd 0 lst;
-
-gcdl [999, 27, 81, 54];
+val tree = makeBST [4, 9, 2, 1, 5, 3] (op <);
+searchBST tree (op <) 2;
