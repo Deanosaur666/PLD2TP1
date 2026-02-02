@@ -82,6 +82,17 @@ fun convert (nil) = (nil, nil)
 
 convert [(1,2), (3,4), (5,6)];
 
+(* 9 *)
+(* BST *)
+datatype 'a bst =
+  BSTNil |
+  BSTNode of  'a bst * 'a * 'a bst;
+
+(* 'a list → ('a * 'a → bool) → 'a tree *)
+fun makeBST (x::xs) f =
+  if f x then BSTNil
+  else BSTNil;
+
 (* in class *)
 fun factorial n =
   case n of
