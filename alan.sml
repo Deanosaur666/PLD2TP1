@@ -83,3 +83,30 @@ fun max([]) = ~1
   else max(xs);
 
 max(randoInt);
+
+(*Q9*)
+fun makeBST([]) = Empty
+  | makeBST(x::xs) =
+  let
+      fun insert(x, Empty) = Node(Empty, x, Empty)
+      |insert(x, Node(leftNode, value, rightNode)) =
+      case x < value of
+        true => Node(insert(x, leftNode), value, rightNode)|(*Left*)
+        false => Node(leftNode, value, insert(x, rightNode)) | (*Right*)
+        _ => Node(leftNode,value,rightNode)
+  in
+  insert(x, makeBST(xs))
+  end;
+
+
+val theTree = makeBST(randoInt);
+
+(*Q10*)
+fun searchBST(findInt, Empty) = false
+  | searchBST(findInt, Node(leftNode, value, rightNode)) =
+    if findInt = value then true
+    else if findInt < value then searchBST(findInt, leftNode)
+    else  searchBST(findInt, rightNode)
+;
+
+searchBST(59, theTree);
