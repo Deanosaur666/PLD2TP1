@@ -66,3 +66,14 @@ fun max [x] = x
       else max xs;
 
 max [~13, 7583, 13, 7585, 3];
+
+(* Q8 - Alan and Aty's *)
+fun convert [] = ([],[])
+  | convert((x,y)::rest) =
+    let
+      val (xrest, yrest) = convert(rest)
+    in
+      (x::xrest, y::yrest)
+    end;
+
+convert [(1,2), (3,4), (5,6)];
