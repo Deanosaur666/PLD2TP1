@@ -77,3 +77,27 @@ fun convert [] = ([],[])
     end;
 
 convert [(1,2), (3,4), (5,6)];
+
+(* Q9 - Dean's Answer *)
+datatype 'a bst =
+  BSTNil |
+  BSTNode of  'a bst * 'a * 'a bst;
+
+fun bstInsert(BSTNil, x, comp) = BSTNode(BSTNil, x, BSTNil)
+  | bstInsert(BSTNode(left, data, right), x, comp) =
+    if comp(x, data) then BSTNode(bstInsert(left, x, comp), data, right)
+    else  BSTNode(left, data, bstInsert(right, x, comp));
+
+fun makeBST nil comp = BSTNil
+  | makeBST (x::xs) comp = bstInsert(makeBST xs comp, x, comp);
+
+val tree = makeBST [4, 5, 7, 3, ~9, 7583] (op <);
+
+(* Q10 - Dean's Answer *)
+fun searchBST BSTNil _ _ = false
+  | searchBST (BSTNode(left, data, right)) comp x =
+    if x = data then true
+    else if comp(x, data) then searchBST left comp x
+    else searchBST right comp x;
+
+searchBST tree (op <) 3;
